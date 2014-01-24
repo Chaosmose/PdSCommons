@@ -21,9 +21,16 @@
     if(!path)
         return path;
     // Those filtering operations may be necessary sometimes when manipulating IOS FS.
-    NSString *filtered=[[path copy] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *filtered=[path copy];
+#if TARGET_OS_IPHONE
+    filtered=[filtered stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     filtered=[filtered stringByReplacingOccurrencesOfString:@"file:///private" withString:@""];
     filtered=[filtered stringByReplacingOccurrencesOfString:@"file://" withString:@""];
+#else
+    filtered=[filtered stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    filtered=[filtered stringByReplacingOccurrencesOfString:@"file://localhost/" withString:@"/"];
+    filtered=[filtered stringByStandardizingPath];
+#endif
     return filtered;
 }
 
