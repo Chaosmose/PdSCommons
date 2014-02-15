@@ -29,6 +29,7 @@
 #else
     filtered=[filtered stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     filtered=[filtered stringByReplacingOccurrencesOfString:@"file://localhost/" withString:@"/"];
+    filtered=[filtered stringByReplacingOccurrencesOfString:@"file:/" withString:@"/"];
     filtered=[filtered stringByStandardizingPath];
 #endif
     return filtered;
